@@ -1,8 +1,8 @@
-## bobthefish
+## ovstetun
 
-bobthefish is a Powerline-style, Git-aware fish theme optimized for awesome.
+ovstetun is a Powerline-style, Git-aware fish theme optimized for awesome. Based on bobthefish, cleaned up for my preferences.
 
-![bobthefish][screenshot]
+![ovstetun][screenshot]
 
 You will probably need a [Powerline-patched font][patching] for this to work.
 [I recommend picking one of these][fonts] or pick [Monaco for Powerline][monaco].
@@ -42,7 +42,7 @@ This theme is based loosely on [agnoster][agnoster].
  * Abbreviated project-relative path
 
 
-[screenshot]: http://i.0x7f.us/bobthefish.png
+[screenshot]: http://i.imgur.com/ZacaPDg.png
 [patching]:   https://powerline.readthedocs.org/en/latest/fontpatching.html
 [fonts]:      https://github.com/Lokaltog/powerline-fonts
 [monaco]:     https://gist.github.com/baopham/1838072
