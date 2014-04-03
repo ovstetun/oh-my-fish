@@ -199,18 +199,10 @@ function __bobthefish_prompt_user -d 'Display actual user if different from $def
   end
 end
 
-# TODO: clean up the fugly $ahead business
 function __bobthefish_prompt_git -d 'Display the actual git state'
-  set -l dirty   (command git diff --no-ext-diff --quiet --exit-code; or echo -n '✱')
-  set -l staged  (command git diff --cached --no-ext-diff --quiet --exit-code; or echo -n '✚')
-  set -l stashed (command git rev-parse --verify refs/stash > /dev/null 2>&1; and echo -n '✭')
-  set -l ahead   (command git branch -v 2> /dev/null | grep -Eo '^\* [^ ]* *[^ ]* *\[[^]]*\]' | grep -Eo '\[[^]]*\]$' | awk 'ORS="";/ahead/ {print "⬆"} /behind/ {print "⬇"}')
-
-  set -l new (command git ls-files --other --exclude-standard);
-  test "$new"; and set new '…'
-
-  #set -l flags   "$dirty$staged$stashed$ahead$new"
-  test "$flags"; and set flags " $flags"
+  set -l dirty   (command git diff --no-ext-diff --quiet --exit-code; or echo -n 'd')
+  set -l staged  (command git diff --cached --no-ext-diff --quiet --exit-code; or echo -n 's')
+  set -l stashed (command git rev-parse --verify refs/stash > /dev/null 2>&1; and echo -n 'x')
 
   set -l flag_bg $lt_green
   set -l flag_fg $dk_green
