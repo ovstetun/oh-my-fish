@@ -111,8 +111,8 @@ function fish_prompt -d "Write out the left prompt of the syl20bnr theme"
     end
     set ps_git $colbwhite"git:"$colbcyan$git_branch_name$git_info$colnormal"@"$colbred$git_repo_name
     if test "$basedir_name" != "$git_repo_name"
-        set -l basedir_depth (echo (__syl20bnr_git_repo_base) | cut -d "/" --output-delimiter=" " -f 1- | wc -w)
-        set -l depth (echo (pwd) | cut -d "/" --output-delimiter=" " -f 1- | wc -w)
+        set -l basedir_depth (echo (__syl20bnr_git_repo_base) | sed "s/\// /g" | wc -w)
+        set -l depth (echo (pwd) | sed "s/\// /g" | wc -w)
         set depth (math $depth - $basedir_depth)
         set ps_git $ps_git$colbwhite":"$colbgreen$basedir_name$colnormal"("$depth")"
     end
@@ -127,7 +127,7 @@ function fish_prompt -d "Write out the left prompt of the syl20bnr theme"
   # '/' without the current directory and depth.
   set -l ps_pwd ""
   if test -z "$ps_git"
-    set -l depth (echo (pwd) | cut -d "/" --output-delimiter=" " -f 1- | wc -w)
+    set -l depth (echo (pwd) | sed "s/\// /g" | wc -w)
     set -l in_home (echo (pwd) | grep ~)
     if test -n "$in_home"
       set ps_pwd $colbwhite"home"
@@ -150,7 +150,7 @@ function fish_prompt -d "Write out the left prompt of the syl20bnr theme"
   if test -n "$vi_mode"
     set ps_vi $colnormal"["$vi_mode$colnormal"]"
   end
-  if test "$fish_key_bindings" = "fish_vi_key_bindings"
+  if test "$fish_key_bindings" = "fish_vi_key_bindings" -o "$fish_key_bindings" = "my_fish_key_bindings" 
     set ps_vi (fish_vi_prompt_cm)
   end
 
@@ -166,8 +166,19 @@ function fish_prompt -d "Write out the left prompt of the syl20bnr theme"
   # the current shell process and get back to the ranger process.
   set -l ps_end ">"
   # indicator for ranger parent process
-  set ranger ""
-  if pstree -p -l | grep "fish("(echo %self)")" | grep 'ranger([0-9]*)' > /dev/null
+  set -l ranger ""
+  set -l os (uname)
+  if test "$os" = "Darwin"
+    if pstree -s ranger | grep (echo %self) | grep -v grep > /dev/null
+      set ranger 1
+    end
+  end
+  if test "$os" = "Linux"
+    if pstree -p -l | grep "fish("(echo %self)")" | grep 'ranger([0-9]*)' > /dev/null
+      set ranger 1
+    end
+  end
+  if test -n "$ranger"
     set ps_end $ps_end$ps_end
   end
   # last status give the color of the right arrows at the end of the prompt
