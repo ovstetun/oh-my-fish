@@ -36,7 +36,6 @@ for load in $fish_custom/*.load
   . $load
 end
 
-=======
 # Prepend extracted user functions so they have the highest priority.
 set fish_function_path $user_function_path $fish_function_path
 
